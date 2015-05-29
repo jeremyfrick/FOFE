@@ -34,15 +34,19 @@ class ViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //set switches to off
         self.yellItSwitch.on = false
         self.cleanItUpSwitch.on = false
+        
+        //setup On-Screen keyboard managment
         toTextBox.delegate = self
         fromTextBox.delegate = self
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
-        // Do any additional setup after loading the view, typically from a nib.
     }
+    //MARK: - UI Actions
     
     @IBAction func foButtonPressed(sender: AnyObject) {
         toText = self.toTextBox.text
@@ -60,10 +64,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    
+    //MARK: - Message Building
     func buildMessage(to: String, from: String) {
-        
-        
             let url = bURL.buildUrl(to, from: from, yell: self.yellItSwitch.on)
             let request = NSMutableURLRequest(URL: url)
             request.addValue("application/json", forHTTPHeaderField: "Accept")
@@ -90,7 +92,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
     //MARK: - share function
 
     @IBAction func shareFOButtonPressed(sender: AnyObject) {
-        
         var shareText = self.foTextLabel.text as String!
         let itemsToShare = [shareText]
         let activityViewController = UIActivityViewController(activityItems: itemsToShare, applicationActivities: nil)
@@ -125,7 +126,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    //MARK: Keyboard control
+    //MARK: - Keyboard control
     func keyboardWillShow(notification: NSNotification)
     {
         self.keyboardIsShowing = true
